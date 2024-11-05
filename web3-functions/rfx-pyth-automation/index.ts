@@ -4,10 +4,10 @@ import {
   Web3FunctionEventContext,
 } from "@gelatonetwork/web3-functions-sdk";
 
-import * as EventEmitterAbi from './abis/EventEmitter.json';
-import * as OrderHandlerAbi from './abis/OrderHandler.json';
-import * as DepositHandlerAbi from './abis/DepositHandler.json';
-import * as WithdrawalHandlerAbi from './abis/WithdrawalHandler.json';
+import EventEmitterAbi from './abis/EventEmitter.json';
+import OrderHandlerAbi from './abis/OrderHandler.json';
+import DepositHandlerAbi from './abis/DepositHandler.json';
+import WithdrawalHandlerAbi from './abis/WithdrawalHandler.json';
 
 import PythAbi from "@pythnetwork/pyth-sdk-solidity/abis/IPyth.json";
 
@@ -36,6 +36,7 @@ Web3Function.onRun(async (context: Web3FunctionEventContext) => {
       return { canExec: false, message: `event found: ${event.args[1]}, ignoring`};
     }
 
+    console.log(`event found: ${event.args[1]}`)
     const {
       key,
       market,
@@ -121,7 +122,7 @@ Web3Function.onRun(async (context: Web3FunctionEventContext) => {
     console.log(`sent tx: ${res.hash}`)
     await res.wait();
     
-    console.log(`executed tx: ${res.hash}`)
+    console.log(`tx successful`)
 
     return {
       canExec: false,
