@@ -1,7 +1,7 @@
 import { AddressZero } from "@ethersproject/constants";
 import { EvmPriceServiceConnection, HexString } from "@pythnetwork/pyth-evm-js";
 import { Buffer } from "buffer";
-import { Contract } from "ethers";
+import { BigNumber, Contract } from "ethers";
 import { defaultAbiCoder } from "ethers/lib/utils";
 import { MarketProps, feedIdCache, baseFeedIdCache, config} from "./config"
 
@@ -60,7 +60,7 @@ export function base64ToHex(data: string): HexString {
   return "0x" + Buffer.from(data, "base64").toString("hex");
 }
 
-export async function getOracleParams(marketProps: MarketProps[], timestamp: number, pythContract: Contract, hermesEndpoint: string): Promise<{ oracleParams: OracleParams, updateFee: Number}> {
+export async function getOracleParams(marketProps: MarketProps[], timestamp: number, pythContract: Contract, hermesEndpoint: string): Promise<{ oracleParams: OracleParams, updateFee: BigNumber}> {
     let feedIds = new Set<string>();
     let addressToFeedId: Record<string, string> = {};
     let addressToBaseFeedId: Record<string, string> = {};

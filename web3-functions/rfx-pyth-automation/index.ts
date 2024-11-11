@@ -16,10 +16,10 @@ import { MarketProps, marketProps, config } from "./config"
 import { Contract, ethers } from "ethers";
 
 Web3Function.onRun(async (context: Web3FunctionEventContext) => {
-  const { log, secrets } = context;
+  const { log, secrets, multiChainProvider } = context;
 
   const HERMES_ENDPOINT = await secrets.get("HERMES_ENDPOINT");
-  const KEEPER_PRIVATE_KEY = await secrets.get("KEEPER_PRIVATE_KEY");
+  // const KEEPER_PRIVATE_KEY = await secrets.get("KEEPER_PRIVATE_KEY");
 
   try {
     // Parse the event from the log using the provided event ABI
@@ -72,13 +72,13 @@ Web3Function.onRun(async (context: Web3FunctionEventContext) => {
     }
 
     // TODO: use gelato's inbulit multi chain provider instead of a custom one
-    const provider = new ethers.providers.JsonRpcProvider(config.RPC);
-    const signer = new ethers.Wallet(KEEPER_PRIVATE_KEY!, provider);
+    const provider = multiChainProvider.default();//new ethers.providers.JsonRpcProvider(config.RPC);
+    // const signer = new ethers.Wallet(KEEPER_PRIVATE_KEY!, provider);
     
     const pythContract = new Contract(
       config.PythOracle,
       PythAbi,
-      signer
+      provider
     );
 
     const blockTimestamp = (await provider.getBlock(log.blockNumber)).timestamp;
@@ -90,43 +90,66 @@ Web3Function.onRun(async (context: Web3FunctionEventContext) => {
       const depositHandler = new Contract(
         config.DepositHandler,
         DepositHandlerAbi,
-        signer
+        provider
       );
+      return {
+        canExec: true,
+        callData: [{to: depositHandler.address, data: depositHandler.interface.encodeFunctionData("executeDeposit", [key, oracleParams]), value: updateFee.toString()}]
+      }
+      /*
       res = await depositHandler.executeDeposit(key, oracleParams, {
         value: updateFee, gasLimit: 10000000
       });
+      */
     }
     
     else if (event.args[1] == "OrderCreated") {
       const orderHandler = new Contract(
         config.OrderHandler,
         OrderHandlerAbi,
-        signer
+        provider
       );
+      return {
+        canExec: true,
+        callData: [{to: orderHandler.address, data: orderHandler.interface.encodeFunctionData("executeOrder", [key, oracleParams]), value: updateFee.toString()}]
+      }
+
+      /*
       res = await orderHandler.executeOrder(key, oracleParams, {
         value: updateFee, gasLimit: 10000000
       });
+      */
     }
     
     else if (event.args[1] == "WithdrawalCreated") {
       const withdrawalHandler = new Contract(
         config.WithdrawalHandler,
         WithdrawalHandlerAbi,
-        signer
+        provider
       );
+      return {
+        canExec: true,
+        callData: [{to: withdrawalHandler.address, data: withdrawalHandler.interface.encodeFunctionData("executeWithdrawal", [key, oracleParams]), value: updateFee.toString()}]
+      }
+
+      /*
+      // executeOrder???
       res = await withdrawalHandler.executeOrder(key, oracleParams, {
         value: updateFee, gasLimit: 10000000
       });
+      */
     }
 
+/*
     console.log(`sent tx: ${res.hash}`)
     await res.wait();
     
     console.log(`tx successful`)
+    */
 
     return {
       canExec: false,
-      message: `executed tx: ${res.hash}`
+      message: `no match: ${event.args[1]}`
     };
   } catch (err) {
     console.log(err)
