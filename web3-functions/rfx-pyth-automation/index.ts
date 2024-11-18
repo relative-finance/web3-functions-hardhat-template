@@ -71,7 +71,6 @@ Web3Function.onRun(async (context: Web3FunctionEventContext) => {
       props.push(marketProps[swapPath[i]]);
     }
 
-    // TODO: use gelato's inbulit multi chain provider instead of a custom one
     const provider = multiChainProvider.default();//new ethers.providers.JsonRpcProvider(config.RPC);
     // const signer = new ethers.Wallet(KEEPER_PRIVATE_KEY!, provider);
     
@@ -140,7 +139,7 @@ Web3Function.onRun(async (context: Web3FunctionEventContext) => {
       */
     }
 
-/*
+    /*
     console.log(`sent tx: ${res.hash}`)
     await res.wait();
     
