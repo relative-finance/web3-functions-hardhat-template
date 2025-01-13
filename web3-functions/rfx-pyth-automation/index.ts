@@ -11,15 +11,14 @@ import WithdrawalHandlerAbi from './abis/WithdrawalHandler.json';
 
 import PythAbi from "@pythnetwork/pyth-sdk-solidity/abis/IPyth.json";
 
-import { decodeEventData, getOracleParams } from "./utils"
+import { decodeEventData, getOracleParams, sleep } from "./utils"
 import { MarketProps, marketProps, config } from "./config"
-import { Contract, ethers } from "ethers";
+import { Contract } from "ethers";
 
 Web3Function.onRun(async (context: Web3FunctionEventContext) => {
   const { log, secrets, multiChainProvider } = context;
 
   const HERMES_ENDPOINT = await secrets.get("HERMES_ENDPOINT");
-  // const KEEPER_PRIVATE_KEY = await secrets.get("KEEPER_PRIVATE_KEY");
 
   try {
     // Parse the event from the log using the provided event ABI
@@ -58,6 +57,9 @@ Web3Function.onRun(async (context: Web3FunctionEventContext) => {
 
     console.log(`order tx: ${log.transactionHash}`);
 
+    // sleep 2 seconds to reduce chances of w3f passing simulation when other automation executes the item
+    await sleep(2 * 1000);
+
     let props: MarketProps[] = [];
     props.push(marketProps[market])
 
@@ -71,8 +73,7 @@ Web3Function.onRun(async (context: Web3FunctionEventContext) => {
       props.push(marketProps[swapPath[i]]);
     }
 
-    const provider = multiChainProvider.default();//new ethers.providers.JsonRpcProvider(config.RPC);
-    // const signer = new ethers.Wallet(KEEPER_PRIVATE_KEY!, provider);
+    const provider = multiChainProvider.default();
     
     const pythContract = new Contract(
       config.PythOracle,
@@ -82,8 +83,6 @@ Web3Function.onRun(async (context: Web3FunctionEventContext) => {
 
     const blockTimestamp = (await provider.getBlock(log.blockNumber)).timestamp;
     const { oracleParams, updateFee } = await getOracleParams(props, blockTimestamp, pythContract, HERMES_ENDPOINT!);
-
-    let res;
 
     if (event.args[1] == "DepositCreated") {
       const depositHandler = new Contract(
@@ -95,11 +94,6 @@ Web3Function.onRun(async (context: Web3FunctionEventContext) => {
         canExec: true,
         callData: [{to: depositHandler.address, data: depositHandler.interface.encodeFunctionData("executeDeposit", [key, oracleParams]), value: updateFee.toString()}]
       }
-      /*
-      res = await depositHandler.executeDeposit(key, oracleParams, {
-        value: updateFee, gasLimit: 10000000
-      });
-      */
     }
     
     else if (event.args[1] == "OrderCreated") {
@@ -112,12 +106,6 @@ Web3Function.onRun(async (context: Web3FunctionEventContext) => {
         canExec: true,
         callData: [{to: orderHandler.address, data: orderHandler.interface.encodeFunctionData("executeOrder", [key, oracleParams]), value: updateFee.toString()}]
       }
-
-      /*
-      res = await orderHandler.executeOrder(key, oracleParams, {
-        value: updateFee, gasLimit: 10000000
-      });
-      */
     }
     
     else if (event.args[1] == "WithdrawalCreated") {
@@ -130,21 +118,7 @@ Web3Function.onRun(async (context: Web3FunctionEventContext) => {
         canExec: true,
         callData: [{to: withdrawalHandler.address, data: withdrawalHandler.interface.encodeFunctionData("executeWithdrawal", [key, oracleParams]), value: updateFee.toString()}]
       }
-
-      /*
-      // executeOrder???
-      res = await withdrawalHandler.executeOrder(key, oracleParams, {
-        value: updateFee, gasLimit: 10000000
-      });
-      */
     }
-
-    /*
-    console.log(`sent tx: ${res.hash}`)
-    await res.wait();
-    
-    console.log(`tx successful`)
-    */
 
     return {
       canExec: false,

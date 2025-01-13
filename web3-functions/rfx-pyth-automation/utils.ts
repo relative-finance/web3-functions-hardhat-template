@@ -11,6 +11,8 @@ export interface OracleParams {
     data: string[];
 }
 
+export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 export function decodeEventData(originalObject: any[][][][]): {
     key: string;
     market: string;
