@@ -65,6 +65,7 @@
     "@gelatonetwork/web3-functions-sdk": "2.3.0",
     "@pythnetwork/pyth-evm-js": "^1.73.0",
     "@pythnetwork/pyth-sdk-solidity": "^4.0.0",
+    "@rfx-exchange/datadog-logger": "^1.0.1",
     "ky": "^0.33.2"
   }
 }
