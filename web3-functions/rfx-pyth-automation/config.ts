@@ -5,13 +5,13 @@ export const config = {
   PythOracle: "0xf087c864AEccFb6A2Bf1Af6A0382B0d0f6c5D834",
 
   // internal
-  // PythDataStreamProvider: "0xd962BC6D729EA0233a9B061C121b03232cEBA297",
+  // PythDataStreamProvider: "0xCc3268075BBf44fFdEdAce14F2cc99b040400eA9",
   // OrderHandler: "0x9fE8Aa97f5221Bc73013068123F36dc549a8330f",
   // DepositHandler: "0x31532288099C7C4D2f7D1A2578538b9511f71559",
   // WithdrawalHandler: "0x06708A03Be87F1493B55Cb1f881952079680CA75",
   
   // mainnet
-  PythDataStreamProvider: "0x36DD988f3Af4B98Bb14d97c7215D5e78AA008815",
+  PythDataStreamProvider: "0x0C7692E3572bE9daAc98B84765aC1f3c9b1b1593",
   OrderHandler: "0x90F43c4bedDd8cFE8619A421d64e0230a4bDCE06",
   DepositHandler: "0xDfB8D44fA2FcBa7ea1C4Ad70f102C70A3a710d67",
   WithdrawalHandler: "0xF44494294b861EaD6ebDbf028e6029b9a2337822",
