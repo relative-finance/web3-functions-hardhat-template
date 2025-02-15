@@ -63,8 +63,6 @@
   "dependencies": {
     "@gelatonetwork/automate-sdk": "^3.0.2",
     "@gelatonetwork/web3-functions-sdk": "2.3.0",
-    "@pythnetwork/pyth-evm-js": "^1.73.0",
-    "@pythnetwork/pyth-sdk-solidity": "^4.0.0",
-    "ky": "^0.33.2"
+    "ky": "1.7.5"
   }
 }
