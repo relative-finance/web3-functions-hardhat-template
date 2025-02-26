@@ -3,14 +3,14 @@ export const config = {
   RPC: "https://mainnet.era.zksync.io",
 
   // internal
-  OrderHandler: "0x9fE8Aa97f5221Bc73013068123F36dc549a8330f",
-  DepositHandler: "0x31532288099C7C4D2f7D1A2578538b9511f71559",
-  WithdrawalHandler: "0x06708A03Be87F1493B55Cb1f881952079680CA75",
+  // OrderHandler: "0x9fE8Aa97f5221Bc73013068123F36dc549a8330f",
+  // DepositHandler: "0x31532288099C7C4D2f7D1A2578538b9511f71559",
+  // WithdrawalHandler: "0x06708A03Be87F1493B55Cb1f881952079680CA75",
 
   // mainnet
-  // OrderHandler: "0x90F43c4bedDd8cFE8619A421d64e0230a4bDCE06",
-  // DepositHandler: "0xDfB8D44fA2FcBa7ea1C4Ad70f102C70A3a710d67",
-  // WithdrawalHandler: "0xF44494294b861EaD6ebDbf028e6029b9a2337822",
+  OrderHandler: "0x90F43c4bedDd8cFE8619A421d64e0230a4bDCE06",
+  DepositHandler: "0xDfB8D44fA2FcBa7ea1C4Ad70f102C70A3a710d67",
+  WithdrawalHandler: "0xF44494294b861EaD6ebDbf028e6029b9a2337822",
 };
 
 export interface MarketProps {
