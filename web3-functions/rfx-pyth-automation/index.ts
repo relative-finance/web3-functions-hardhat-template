@@ -16,12 +16,12 @@ import ky from "ky";
 let SDK_API: KyInstance;
 
 Web3Function.onRun(async (context: Web3FunctionEventContext) => {
-  const { log, multiChainProvider, userArgs } = context;
+  const { log, multiChainProvider } = context;
 
+  console.log(log);
   SDK_API = ky.create({
-    prefixUrl: userArgs.BASE_SDK_URL
-      ? String(userArgs.BASE_SDK_URL)
-      : "https://k5npgabr92.execute-api.us-east-1.amazonaws.com",
+    // prefixUrl: "https://k5npgabr92.execute-api.us-east-1.amazonaws.com", // Mainnet URL
+    prefixUrl: "https://i3t32kr8e2.execute-api.us-east-1.amazonaws.com", // Internal URL
   });
 
   try {

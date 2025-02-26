@@ -83,7 +83,6 @@ export async function getOracleParamsSDKBulk(
       },
     })
     .json();
-
   return {
     oracleParams: response.oracleParams,
     updateFee: BigInt(response.updateFee),
