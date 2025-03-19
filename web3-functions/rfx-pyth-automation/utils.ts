@@ -74,8 +74,8 @@ export async function getOracleParamsSDKBulk(
   api: KyInstance,
   marketProps: MarketProps[]
 ): Promise<{ oracleParams: OracleParams; updateFee: bigint }> {
-  const response = await api
-    .get<OracleParamsResponse>("oracle_params", {
+  const response: OracleParamsResponse = await api
+    .get("oracle_params", {
       searchParams: {
         marketAddresses: marketProps
           .map((value) => value.marketToken)

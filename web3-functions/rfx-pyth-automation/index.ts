@@ -20,8 +20,8 @@ Web3Function.onRun(async (context: Web3FunctionEventContext) => {
 
   console.log(log);
   SDK_API = ky.create({
-    // prefixUrl: "https://k5npgabr92.execute-api.us-east-1.amazonaws.com", // Mainnet URL
-    prefixUrl: "https://i3t32kr8e2.execute-api.us-east-1.amazonaws.com", // Internal URL
+    prefixUrl: "https://ccgv6da97e.execute-api.us-east-1.amazonaws.com", // Mainnet URL
+    // prefixUrl: "https://i3t32kr8e2.execute-api.us-east-1.amazonaws.com", // Internal URL
   });
 
   try {
