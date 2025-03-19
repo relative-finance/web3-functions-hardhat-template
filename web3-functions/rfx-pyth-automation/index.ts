@@ -14,6 +14,10 @@ import { KyInstance } from "ky/distribution/types/ky";
 import ky from "ky";
 
 let SDK_API: KyInstance;
+import createLogger from "./logger";
+import winston from "winston";
+
+let logger: winston.Logger;
 
 Web3Function.onRun(async (context: Web3FunctionEventContext) => {
   const { log, multiChainProvider } = context;
@@ -23,10 +27,12 @@ Web3Function.onRun(async (context: Web3FunctionEventContext) => {
     prefixUrl: "https://ccgv6da97e.execute-api.us-east-1.amazonaws.com", // Mainnet URL
     // prefixUrl: "https://i3t32kr8e2.execute-api.us-east-1.amazonaws.com", // Internal URL
   });
+  const DD_API_KEY = await secrets.get("DD_API_KEY");
+  logger = createLogger(DD_API_KEY);
 
   try {
     // Parse the event from the log using the provided event ABI
-    console.log("parsing event");
+    logger.log("info", "parsing event");
     const contractInterface = new Interface(EventEmitterAbi);
     const event = contractInterface.parseLog(log);
 
@@ -35,14 +41,14 @@ Web3Function.onRun(async (context: Web3FunctionEventContext) => {
       event.args[1] != "OrderCreated" &&
       event.args[1] != "WithdrawalCreated"
     ) {
-      console.log(`event found: ${event.args[1]}, ignoring`);
+      logger.log("info", `event found: ${event.args[1]}, ignoring`);
       return {
         canExec: false,
         message: `event found: ${event.args[1]}, ignoring`,
       };
     }
 
-    console.log(`event found: ${event.args[1]}`);
+    logger.log("info", `event found: ${event.args[1]}`);
     const {
       key,
       market,
@@ -58,14 +64,14 @@ Web3Function.onRun(async (context: Web3FunctionEventContext) => {
       orderType != 2 &&
       orderType != 4
     ) {
-      console.log(`order type found: ${orderType}, ignoring`);
+      logger.log("info", `order type found: ${orderType}, ignoring`);
       return {
         canExec: false,
         message: `order type found: ${orderType}, ignoring`,
       };
     }
 
-    console.log(`order tx: ${log.transactionHash}`);
+    logger.log("info", `order tx: ${log.transactionHash}`);
 
     // sleep 2 seconds to reduce chances of w3f passing simulation when other automation executes the item
     await sleep(2 * 1000);
@@ -154,7 +160,7 @@ Web3Function.onRun(async (context: Web3FunctionEventContext) => {
       message: `no match: ${event.args[1]}`,
     };
   } catch (err) {
-    console.log(err);
+    logger.log("error", String(err));
     return {
       canExec: false,
       message: (err as Error).message,

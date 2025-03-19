@@ -63,6 +63,7 @@
   "dependencies": {
     "@gelatonetwork/automate-sdk": "^3.0.2",
     "@gelatonetwork/web3-functions-sdk": "2.3.0",
+    "@rfx-exchange/datadog-logger": "^1.0.1",
     "ky": "1.7.5"
   }
 }
