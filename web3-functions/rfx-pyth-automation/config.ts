@@ -1,16 +1,11 @@
 export const config = {
   // rpc url
-  RPC: "https://mainnet.era.zksync.io",
-
-  // internal
-  // OrderHandler: "0x9fE8Aa97f5221Bc73013068123F36dc549a8330f",
-  // DepositHandler: "0x31532288099C7C4D2f7D1A2578538b9511f71559",
-  // WithdrawalHandler: "0x06708A03Be87F1493B55Cb1f881952079680CA75",
+  RPC: "https://hyperliquid-mainnet.g.alchemy.com/v2/ahPYIuSuxgGHSArXx8sPz",
 
   // mainnet
-  OrderHandler: "0x90F43c4bedDd8cFE8619A421d64e0230a4bDCE06",
-  DepositHandler: "0xDfB8D44fA2FcBa7ea1C4Ad70f102C70A3a710d67",
-  WithdrawalHandler: "0xF44494294b861EaD6ebDbf028e6029b9a2337822",
+  OrderHandler: "0x6e9106925d1FAf7A3E321dEcf3131f1139917b16",
+  DepositHandler: "0x8481e035B87A92eb00ef00A80D1bD747639600a0",
+  WithdrawalHandler: "0x596F1dD9eEBd5D2E5331Dc3ea10E3E49566F08ee",
 };
 
 export interface MarketProps {
@@ -239,4 +234,11 @@ export const marketProps: Record<string, MarketProps> = {
     longToken: "0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4",
     shortToken: "0x0469d9d1de0ee58fa1153ef00836b9bbcb84c0b6",
   },
+  /// HYPERLIQUID MAINNET MARKETS
+  "0x1e1f77636241478BdC5E8D800585B9c556Ae5Ec0": {
+    marketToken: "0x1e1f77636241478BdC5E8D800585B9c556Ae5Ec0",
+    indexToken: "0x57509Cb80d03aCf7ffce02D92Df36a6AD3C403C3",
+    longToken: "0x94e8396e0869c9F2200760aF0621aFd240E1CF38",
+    shortToken: "0x94e8396e0869c9F2200760aF0621aFd240E1CF38",
+},
 };
